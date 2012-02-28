@@ -1,0 +1,47 @@
+Welcome to the "led scratch" project !
+
+                    )¯¯)     l¯¯(\__\  l¯¯l\¯¯\ 
+                   (__(/¯¯/  l__(/¯¯/  l__l/__/ 
+
+  /¯¯(\___\  /¯¯/\__\   l¯¯l)¯¯)  /¯¯/l¯¯l    l¯¯¯¯¯l   /¯¯/\__\   l¯¯l_l¯¯l 
+ (¯¯¯\)___)  \__\/¯¯/   l__l\__\  \__\l__'\   ¯l__l¯‘   \__\/¯¯/   l__l¯l__l 
+
+
+Presentation
+============
+
+The idea of this project was to be able to play with lights using a digital
+scratch tool such as serato. In our case, we used a LED strip and a Teensy
+to analyse the signal plus some electronics interfacing.
+
+The stereo signal that we get from the turntable is a pair of 5mV peak to peak
+sine waves, one of them is a quarter of period late to detect the direction.
+
+To analyse it in the teensy, we saturate it to a squared wave of 5V-0V with
+an op-amp in comparator mode (LM358).
+Because of the vinyl noise, it needs to be filtered to remove the frequencies
+above 8KHz and below 500Hz (at a normal speed, the frequency is 2000Hz).
+This digital signal is then processed using the Encoder library of Arduino.
+
+
+Utilization
+===========
+
+The Encoder library and some explanaitions can be found on the following page,
+but it's already in the repository so don't download it:
+  http://www.pjrc.com/teensy/td_libs_Encoder.html
+Here is how to use it:
+
+# Go in the libraries folder of your arduino (adapt this line to your case):
+cd /opt/arduino/libraries/
+
+# ...and make a link (adapt this line too):
+SKETCH_FOLDER=$HOME/sketchbook
+ln -s $SKETCH_FOLDER/displaysolar/libraries/Encoder
+
+
+Any question ?
+=> feel free to contact me : Drix(at)tangibleDisplay.com
+
+Enjoy ;)
+
