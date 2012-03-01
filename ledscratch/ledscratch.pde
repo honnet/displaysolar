@@ -1,46 +1,28 @@
-#include <Encoder.h>
-// check the README file for instruction to use this library
-#define ENCODER_OPTIMIZE_INTERRUPTS //TODO add in master branch
+/* LEDS connections on Teensy:
+PORTB:        0,  1,  2,  3,  4,  5,  6,  7
+Arduino pin:  0,  1,  2,  3, 15, 14, 13,  4
+*/
 
-
-#define DEBUG
-
-#ifdef DEBUG
-#  define DPbegin(s)      Serial.begin(s)
-#  define DP(...)         Serial.println( __VA_ARGS__)
-#  define TOGGLE_LED()    digitalWrite(DEBUG_LED_PIN, state = !state);
-#else
-#  define DPbegin(s)
-#  define DP(...)
-#  define TOGGLE_LED()
-#endif
-
-
-Encoder myEnc(5, 6);
-long oldPos=0;
-const int TICK_DIV=2*(8000/25); //TODO why 2 ?
-
-const int DEBUG_LED_PIN=11;
-bool state=HIGH;
+bool direct = 0;
+const int DELAY = 300;
 
 
 void setup()
 {
-  pinMode(DEBUG_LED_PIN, OUTPUT);
-  DPbegin(115200);
+  DDRB  = B11111111;    // set port B as output
+  PORTB = B00000011;    // inital state
 }
 
 
 void loop()
 {
-  long newPos = myEnc.read();
-  long difPos = newPos-oldPos;
-
-  if ( abs(difPos) > TICK_DIV ) // "divide" encoders ticks
+  if (PORTB == B00000011 || PORTB == B11000000)
   {
-    TOGGLE_LED();
-    oldPos = newPos;
-    DP(newPos);
+    delay(2*DELAY);
+    direct ^= 1; // toggle direct
   }
+
+  PORTB = direct? PORTB<<1 : PORTB>>1;
+  delay(DELAY);
 }
 
